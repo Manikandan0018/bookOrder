@@ -5,14 +5,14 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "prebuild": "chmod +x ./node_modules/.bin/vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  },
+  "prebuild": "chmod +x ./node_modules/.bin/vite",
+  "build": "vite build",
+  "dev": "vite",
+  "preview": "vite preview",
+  "lint": "eslint .",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+},
   "dependencies": {
     "@tanstack/react-query": "^5.85.5",
     "axios": "^1.11.0",
