@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminHeader } from "./AdminHeader";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const VITE_BACKEND_URL = "http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL); 
 
 
@@ -92,7 +92,7 @@ const AdminOrder = () => {
         </style>
       </head>
       <body>
-        <h1>Happy MOZZO Customer</h1>
+        <h1>Happy ReadStore Customer</h1>
         <h2>Order Details</h2>
         <p><strong>Order Number:</strong> ${order.orderNumber || order._id}</p>
         <p><strong>User Details:</strong> ${order.user?.name} | ${

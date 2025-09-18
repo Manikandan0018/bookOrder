@@ -5,8 +5,7 @@ import axios from "axios";
 import { FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const VITE_BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const VITE_BACKEND_URL ="http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL);
 
 export const Header = () => {
@@ -68,11 +67,14 @@ export const Header = () => {
             <a href="/menu" className="hover:text-orange-600 transition">
               BookCategory
             </a>
-           
+
             <a href="/favorites" className="hover:text-orange-600 transition">
               Favorites
             </a>
-            <a href="/my-orders" className="hover:text-orange-600 transition">
+            <a
+              href="/myOrder-status"
+              className="hover:text-orange-600 transition"
+            >
               My Orders
             </a>
           </nav>
@@ -167,7 +169,7 @@ export const Header = () => {
                 Favorites
               </a>
               <a
-                href="/my-orders"
+                href="/myOrder-status"
                 className="block hover:text-orange-600"
                 onClick={() => setMenuOpen(false)}
               >

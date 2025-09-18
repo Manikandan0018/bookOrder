@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const VITE_BACKEND_URL = "http://localhost:5000/";
 
 const Review = ({ productId }) => {
   const token = localStorage.getItem("token");
@@ -28,9 +28,10 @@ const Review = ({ productId }) => {
   const addReview = useMutation({
     mutationFn: async () => {
       if (!token) throw new Error("Login required");
+      // ⚠️ Corrected: send 'product' instead of 'productId'
       const res = await axios.post(
         `${VITE_BACKEND_URL}api/reviews/add`,
-        { productId, rating, comment },
+        { product: productId, rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       return res.data;
@@ -47,7 +48,6 @@ const Review = ({ productId }) => {
   });
 
   return (
-    <>
     <div className="mt-10">
       <h3 className="text-xl font-semibold mb-4">Customer Reviews</h3>
 
@@ -114,8 +114,7 @@ const Review = ({ productId }) => {
           <p className="text-gray-500">No reviews yet. Be the first!</p>
         )}
       </div>
-      </div>
-      </>
+    </div>
   );
 };
 

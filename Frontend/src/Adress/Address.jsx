@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const VITE_BACKEND_URL = "http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL);
 
 const Address = ({ onAddressSaved }) => {

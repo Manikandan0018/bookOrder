@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import foodImage from "../image/sandwitch.jpg";
-import foodImage2 from "../image/peeza.jpg";
-import bgImg from "../image/burger.jpg";
-import { Header } from "../Header/Header";
 
-const VITE_BACKEND_URL =import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+import { Header } from "../Header/Header";
+import Footer from "../Footer/Footer";
+
+const VITE_BACKEND_URL = "http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL);
 
 const Login = () => {
@@ -30,32 +29,30 @@ const Login = () => {
   };
 
   //login
-const handleLogin = async () => {
-  try {
-    const res = await axios.post(`${VITE_BACKEND_URL}api/users/login`, {
-      email: formData.email,
-      password: formData.password,
-    });
+  // login
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(`${VITE_BACKEND_URL}api/users/login`, {
+        email: formData.email,
+        password: formData.password,
+      });
 
-    const token = res.data.token;
-    localStorage.setItem("token", token);
+      const token = res.data.token;
+      localStorage.setItem("token", token);
 
-    // ✅ Fetch user details or use res.data directly
-    const user = res.data;
+      const user = res.data;
 
-    setMessage("✅ Login successful");
+      setMessage("✅ Login successful");
 
-    if (user.role === "admin") {
-      navigate("/admin/orders"); // ✅ admin redirect
-    } else {
-      navigate("/");
+      if (user.role === "admin") {
+        navigate("/admin/orders"); // ✅ FIX: absolute path
+      } else {
+        navigate("/"); // normal user goes to home
+      }
+    } catch (err) {
+      setMessage(err.response?.data?.message || "❌ Login failed");
     }
-  } catch (err) {
-    setMessage(err.response?.data?.message || "❌ Login failed");
-  }
-};
-
-
+  };
 
   // ✅ Register
   const handleRegister = async () => {
@@ -74,7 +71,6 @@ const handleLogin = async () => {
       setMessage(err.response?.data?.message || "❌ Registration failed");
     }
   };
-
 
   return (
     <div
@@ -212,7 +208,9 @@ const handleLogin = async () => {
           </AnimatePresence>
         </div>
       </div>
+      <Footer/>
     </div>
+    
   );
 };
 

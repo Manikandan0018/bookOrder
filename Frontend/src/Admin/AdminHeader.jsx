@@ -7,7 +7,7 @@ export const AdminHeader = () => {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white shadow relative">
       {/* Logo */}
-      <h1 className="text-2xl font-bold text-orange-600">MOZZU</h1>
+      <h1 className="text-2xl font-bold text-orange-600">ReadStore</h1>
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex space-x-6 text-sm font-medium">

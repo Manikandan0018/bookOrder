@@ -1,44 +1,40 @@
 // components/FavoriteProducts.jsx
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Heart, Trash2, ShoppingCart } from "lucide-react";
+import { Trash2, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { Header } from "../Header/Header";
+import { useNavigate } from "react-router-dom";
+import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL =import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-console.log("Backend URL:", VITE_BACKEND_URL);
+const VITE_BACKEND_URL = "http://localhost:5000/";
 
 const Favorite = () => {
   const queryClient = useQueryClient();
-  
-  // Add to cart
+  const navigate = useNavigate();
 
-const addToCart = async (productId, quantity = 1) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please login to add to cart.");
-      return;
-    }
-
-    const { data } = await axios.post(
-      `${VITE_BACKEND_URL}api/cart/addCart`,
-      { product: productId, quantity },
-      {
-        headers: { Authorization: `Bearer ${token}` },
+  // ✅ Add to cart
+  const addToCart = async (productId, quantity = 1) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please login to add to cart.");
+        return;
       }
-    );
 
-    alert("Added to cart ✅");
-    console.log("Cart item:", data);
+      await axios.post(
+        `${VITE_BACKEND_URL}api/cart/addCart`,
+        { product: productId, quantity },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    // ✅ This will refresh cart count in Header without refresh
-    queryClient.invalidateQueries(["cart"]);
-  } catch (error) {
-    console.error(error);
-    alert("Failed to add to cart.");
-  }
-};
+      alert("Added to cart ✅");
+      queryClient.invalidateQueries(["cart"]);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add to cart.");
+    }
+  };
 
   // ✅ Fetch Favorites
   const { data: favorites, isLoading } = useQuery({
@@ -66,110 +62,103 @@ const addToCart = async (productId, quantity = 1) => {
     },
   });
 
- 
-
   if (isLoading) {
     return (
-      <p className="text-center text-gray-500 text-lg mt-20 animate-pulse">
-        Loading your favorites...
-      </p>
+      <p className="text-center text-gray-500 mt-20">Loading favorites...</p>
     );
   }
 
   return (
     <>
       <Header />
-
-      {/* Page Background */}
-      <div
-        className="min-h-screen p-8 bg-gradient-to-br from-orange-50 via-white to-orange-100"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1500&q=80')",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        <div className="bg-black/40  mt-20 backdrop-blur-md min-h-screen rounded-2xl p-8">
-          
-
-          {/* Empty State */}
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 p-8">
+        <div className="container mx-auto mt-20">
           {favorites?.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-white py-24">
+            <div className="flex flex-col items-center justify-center py-20">
               <img
-                src="https://cdn-icons-png.flaticon.com/512/4076/4076505.png"
-                alt="Empty Favorites"
-                className="w-36 h-36 mb-6 opacity-80"
+                src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                alt="Empty"
+                className="w-28 mb-6 opacity-80"
               />
-              <p className="text-lg opacity-90 mb-4">
-                Your favorites list is empty. Start adding some delicious foods
-                ❤️
-              </p>
-              <a
-                href="/menu"
-                className="mt-4 px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition"
-              >
-                Browse Menu
-              </a>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-700 mb-2">
+                No favorites yet ❤️
+              </h2>
+              <p className="text-gray-500">Start adding your favorite books!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              {favorites?.map((item) => (
-                <motion.div
-                  key={item.product._id}
-                  whileHover={{ scale: 1.03 }}
-                  className="bg-white/95 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition"
-                >
-                  {/* Product Image */}
-                  <div className="relative h-60">
-                    <img
-                      src={item.product.imageUrl}
-                      alt={item.product.name}
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      onClick={() => removeFavorite.mutate(item.product._id)}
-                      className="absolute top-3 right-3 bg-white/80 p-2 rounded-full shadow hover:bg-red-100 transition"
-                    >
-                      <Trash2 className="text-red-500" size={20} />
-                    </button>
-                  </div>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {favorites?.map((item) => {
+                if (!item.product) return null;
 
-                  {/* Product Info */}
-                  <div className="p-5 flex flex-col justify-between h-44">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                      {item.product.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">
-                      {item.product.description}
-                    </p>
-                    <p className="text-lg font-bold text-orange-600 mt-2">
-                      ₹{item.product.price}
-                    </p>
-
-                    {/* Actions */}
-                    <div className="flex justify-between items-center mt-3">
-                    <button
-  onClick={() => addToCart(item.product._id)}
-  className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
->
-  <ShoppingCart size={18} /> Add to Cart
-</button>
-
-                      <a
-                        href={`/product/${item.product._id}`}
-                        className="text-sm text-gray-700 font-medium hover:text-orange-600 transition"
+                return (
+                  <motion.div
+                    key={item.product._id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition flex flex-col border border-gray-100"
+                  >
+                    {/* Book Image */}
+                    <div className="relative h-64 overflow-hidden rounded-t-2xl">
+                      <img
+                        src={
+                          item.product.imageUrl ||
+                          "https://via.placeholder.com/200x300?text=No+Image"
+                        }
+                        alt={item.product.title || "Book"}
+                        className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
+                      />
+                      <button
+                        onClick={() => removeFavorite.mutate(item.product._id)}
+                        className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow hover:bg-red-100 transition"
                       >
-                        View Details →
-                      </a>
+                        <Trash2 className="text-red-500" size={20} />
+                      </button>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+
+                    {/* Book Details */}
+                    <div className="p-5 flex flex-col flex-grow">
+                      <h3 className="text-lg font-bold text-gray-900 line-clamp-1">
+                        {item.product.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 mb-1 line-clamp-1">
+                        by {item.product.author}
+                      </p>
+                      <p className="text-xs text-orange-600 font-medium uppercase mb-2">
+                        {item.product.category}
+                      </p>
+                      <p className="text-lg font-extrabold text-gray-800 mb-4">
+                        ₹{item.product.price}
+                      </p>
+
+                      {/* Actions */}
+                      <div className="mt-auto flex flex-col gap-3">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={async () => {
+                            await addToCart(item.product._id); // ✅ add to cart
+                            navigate("/cart"); // ✅ redirect
+                          }}
+                          className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold shadow hover:shadow-lg transition"
+                        >
+                          <ShoppingCart size={18} /> Add to Cart
+                        </motion.button>
+                        <a
+                          href={`/`}
+                          className="text-center text-sm text-gray-600 font-medium hover:text-orange-600 transition"
+                        >
+                          go home →
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

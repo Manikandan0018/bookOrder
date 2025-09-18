@@ -1,4 +1,3 @@
-// components/Dashboard.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent } from "../UiCard/UICard.jsx";
@@ -15,9 +14,7 @@ import {
   YAxis,
 } from "recharts";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
-console.log("Backend URL:", VITE_BACKEND_URL);
+const VITE_BACKEND_URL = "http://localhost:5000/";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -30,43 +27,36 @@ export default function Dashboard() {
 
   if (!stats) return <p>Loading dashboard...</p>;
 
-  // ✅ Single chart data: Veg vs Non-Veg counts
-  const vegNonVegData = [
-    { name: "Veg", value: stats.vegCount },
-    { name: "Non-Veg", value: stats.nonVegCount },
+  // ✅ Chart Data (categories)
+  const categoryData = stats.categories.map((c) => ({
+    name: c.name,
+    value: c.count,
+  }));
+
+  const COLORS = [
+    "#6366f1",
+    "#22c55e",
+    "#f97316",
+    "#e11d48",
+    "#06b6d4",
+    "#facc15",
   ];
-
-  // ✅ All categories chart data
-
-  const data =[{ name: "Veg", count: stats.vegCount},
-    { name: "Non-Veg", count: stats.nonVegCount },
-    { name: "All Products", count: stats.totalProducts}, // sum of veg + non-veg
-  ];
-
-  const COLORS = ["#4CAF50", "#FF5722", "#2196F3", "#FFC107", "#9C27B0"];
 
   return (
     <div className="p-6 space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
         <Card className="p-4 shadow-md rounded-2xl">
           <CardContent>
-            <p className="text-gray-500">Total Products</p>
-            <h2 className="text-2xl font-bold">{stats.totalProducts}</h2>
+            <p className="text-gray-500">Total Books</p>
+            <h2 className="text-2xl font-bold">{stats.totalBooks}</h2>
           </CardContent>
         </Card>
 
         <Card className="p-4 shadow-md rounded-2xl">
           <CardContent>
-            <p className="text-gray-500">Veg Products</p>
-            <h2 className="text-2xl font-bold">{stats.vegCount}</h2>
-          </CardContent>
-        </Card>
-
-        <Card className="p-4 shadow-md rounded-2xl">
-          <CardContent>
-            <p className="text-gray-500">Non-Veg Products</p>
-            <h2 className="text-2xl font-bold">{stats.nonVegCount}</h2>
+            <p className="text-gray-500">Categories</p>
+            <h2 className="text-2xl font-bold">{stats.categories.length}</h2>
           </CardContent>
         </Card>
 
@@ -79,21 +69,23 @@ export default function Dashboard() {
 
         <Card className="p-4 shadow-md rounded-2xl">
           <CardContent>
-            <p className="text-gray-500">Categories</p>
-            <h2 className="text-2xl font-bold">{stats.categoryCount.length}</h2>
+            <p className="text-gray-500">Top Category</p>
+            <h2 className="text-2xl font-bold">
+              {stats.categories.sort((a, b) => b.count - a.count)[0].name}
+            </h2>
           </CardContent>
         </Card>
       </div>
 
       {/* ✅ Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Veg vs Non-Veg Chart */}
+        {/* Category Pie Chart */}
         <Card className="p-4 shadow-md rounded-2xl">
-          <h3 className="text-lg font-semibold mb-4">Veg vs Non-Veg Distribution</h3>
+          <h3 className="text-lg font-semibold mb-4">Books by Category</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={vegNonVegData}
+                data={categoryData}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
@@ -101,7 +93,7 @@ export default function Dashboard() {
                 outerRadius={100}
                 label
               >
-                {vegNonVegData.map((entry, index) => (
+                {categoryData.map((entry, index) => (
                   <Cell key={index} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -111,20 +103,19 @@ export default function Dashboard() {
           </ResponsiveContainer>
         </Card>
 
-       
-
+        {/* Category Bar Chart */}
         <Card className="p-6 shadow-md rounded-2xl">
-      <h3 className="text-lg font-semibold mb-4">Product Distribution</h3>
-      <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#4f46e5" radius={[8, 8, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </Card>
+          <h3 className="text-lg font-semibold mb-4">Book Distribution</h3>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={categoryData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#4f46e5" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
       </div>
     </div>
   );

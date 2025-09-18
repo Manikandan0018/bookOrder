@@ -4,7 +4,7 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Header } from "../Header/Header";
 import { FaRupeeSign, FaShoppingBag } from "react-icons/fa";
 
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const VITE_BACKEND_URL = "http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL);
 
 const Checkout = () => {
