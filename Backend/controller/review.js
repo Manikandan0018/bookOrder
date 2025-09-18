@@ -1,5 +1,5 @@
 import Review from "../models/review.js";
-import Product from "../models/AllProduct.js";
+import Product from "../models/Book.js";
 
 // Add Review
 export const addReview = async (req, res) => {

@@ -1,6 +1,6 @@
 import Order from "../models/orders.js";
 import User from "../models/userLogin.js";
-import ALLProduct from "../models/AllProduct.js";
+import ALLProduct from "../models/Book.js";
 
 // ✅ Create Order
 export const createOrder = async (req, res) => {

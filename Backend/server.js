@@ -5,7 +5,7 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import AllProductRoutes from "./routes/AllProduct.js";
+import bookRoutes from "./routes/Book.js";
 import DashboardRoutes from "./routes/Dashboard.js";
 import userRoutes from "./routes/userLogin.js";
 import cart from "./routes/cart.js";
@@ -14,7 +14,6 @@ import address from "./routes/address.js";
 import order from "./routes/order.js";
 import AdminOrder from "./routes/adminOrder.js";
 import sms from "./routes/sms.js";
-import restaurantRoutes from "./routes/NearHotel.js";
 import reviewRoutes from "./routes/review.js";
 
 
@@ -44,7 +43,7 @@ app.use(
 app.use(express.json());
 
 // Routes
-app.use("/api/AllProduct", AllProductRoutes);
+app.use("/api/books", bookRoutes);
 app.use("/api/dashboard", DashboardRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cart);
@@ -53,7 +52,6 @@ app.use("/api/address", address);
 app.use("/api/orders", order);
 app.use("/api/AdminOrder", AdminOrder);
 app.use("/api/sms", sms);
-app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 

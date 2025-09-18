@@ -26,24 +26,30 @@ export const addToCart = async (req, res) => {
   }
 };
 
+
 export const getCart = async (req, res) => {
   try {
-    const cartItems = await Cart.find({ user: req.user._id }).populate("product");
+    console.log("Fetching cart for user:", req.user._id);
+
+    const cartItems = await Cart.find({ user: req.user._id }).populate(
+      "product",
+      "title author category price imageUrl"
+    );
+
     res.json(cartItems);
   } catch (error) {
+    console.error("❌ Error in getCart:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
-// remove cart item
 export const removeCart = async (req, res) => {
   try {
     const { id } = req.params;
 
     const cartItem = await Cart.findOneAndDelete({
       _id: id,
-      user: req.user._id, // ensures user can delete only their own cart item
+      user: req.user._id,
     });
 
     if (!cartItem) {

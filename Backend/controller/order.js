@@ -1,7 +1,7 @@
 import Order from "../models/orders.js";
 import Cart from "../models/Cart.js";
 import Address from "../models/address.js";
-import ALLProduct from "../models/AllProduct.js";
+import ALLProduct from "../models/Book.js";
 
 // Place single product order
 
@@ -9,15 +9,17 @@ export const placeSingleOrder = async (req, res) => {
   const { productId, quantity, addressId } = req.body;
   try {
     const product = await ALLProduct.findById(productId);
-
     if (!product) return res.status(404).json({ message: "Product not found" });
+
+    if (!addressId)
+      return res.status(400).json({ message: "Address is required" });
 
     const order = new Order({
       user: req.user._id,
       products: [
         {
           product: product._id,
-          name: product.name,
+          name: product.title, // ✅ use title instead of name
           imageUrl: product.imageUrl,
           price: product.price,
           quantity,
@@ -25,15 +27,18 @@ export const placeSingleOrder = async (req, res) => {
       ],
       address: addressId,
       totalAmount: product.price * quantity,
+      paymentMethod: "COD", // set default payment method
     });
 
     await order.save();
 
     res.status(201).json(order);
   } catch (err) {
-    res.status(500).json({ message: "Error placing order" });
+    console.error("Place Single Order Error:", err); // log actual error
+    res.status(500).json({ message: err.message });
   }
 };
+
 
 // Place order for full cart
 export const placeCartOrder = async (req, res) => {
@@ -75,18 +80,21 @@ export const placeCartOrder = async (req, res) => {
 // Get all orders of a user
 export const getMyOrders = async (req, res) => {
   try {
-    // Sort by createdAt DESC so newest orders come first
-    const orders = await Order.find()
+    const orders = await Order.find({ user: req.user._id }) // <-- filter by user
       .populate("user", "name email")
-      .populate("products.product", "name imageUrl")
-      .populate("address", "street city phone pincode")
+      .populate({ path: "products.product", select: "title imageUrl" })
+      .populate({ path: "address", select: "street city phone pincode" })
       .sort({ createdAt: -1 });
 
     res.json(orders);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching orders" });
+    console.error("❌ Get Orders Error:", err); // <-- full error
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: err.message });
   }
 };
+
 
 
 
