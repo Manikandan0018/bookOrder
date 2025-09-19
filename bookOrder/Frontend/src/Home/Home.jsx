@@ -39,7 +39,7 @@ const Home = () => {
 
   const addToCart = async (productId, quantity = 1) => {
     try {
-      if (!token) return alert("Please login to add to cart.");
+      if (!token) return toast.error("please login to add cart");
 
       await axios.post(
         `${VITE_BACKEND_URL}api/cart/addCart`,
@@ -64,10 +64,10 @@ const Home = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(["favorites"]);
-      toast.success(data.message || "Added to favorites ❤️");
+      toast.success("Added to favorites ❤️");
     },
     onError: (err) => {
-      toast.error(err.response?.data?.message || "Failed to add favorite.");
+      toast.error("Failed to add favorite");
     },
   });
 
