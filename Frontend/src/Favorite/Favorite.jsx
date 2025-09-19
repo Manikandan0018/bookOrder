@@ -7,7 +7,8 @@ import { Header } from "../Header/Header";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const Favorite = () => {
   const queryClient = useQueryClient();

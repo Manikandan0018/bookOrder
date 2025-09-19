@@ -14,7 +14,8 @@ import book4 from "../image/bs4.jpg";
 import book5 from "../image/bs5.jpg";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -25,6 +26,8 @@ const Home = () => {
 
   const queryClient = useQueryClient();
   const token = localStorage.getItem("token");
+
+  
 
   // Fetch books
   useEffect(() => {

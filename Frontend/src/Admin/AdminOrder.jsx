@@ -3,7 +3,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminHeader } from "./AdminHeader";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 console.log("Backend URL:", VITE_BACKEND_URL); 
 
 

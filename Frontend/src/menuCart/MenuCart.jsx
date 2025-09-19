@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const MenuCart = () => {
   const [products, setProducts] = useState([]);

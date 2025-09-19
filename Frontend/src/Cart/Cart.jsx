@@ -6,10 +6,11 @@ import { Header } from "../Header/Header";
 import Address from "../Adress/Address";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Review from "../Review/Review";
+import Review from "../review/Review";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const Cart = () => {
   const navigate = useNavigate();

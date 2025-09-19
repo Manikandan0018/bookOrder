@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 import { Header } from "../Header/Header";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const MyOrderStatus = () => {
   const { state } = useLocation();

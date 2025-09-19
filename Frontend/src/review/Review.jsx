@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 
 const Review = ({ productId }) => {
   const token = localStorage.getItem("token");
