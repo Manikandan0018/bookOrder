@@ -92,7 +92,7 @@ const Address = ({ onAddressSaved }) => {
           }));
         }
       } catch (err) {
-        console.error("Error fetching current address:", err);
+        console.error("failed to fetching current address");
       }
     };
     fetchCurrentAddress();

@@ -84,7 +84,7 @@ const Cart = () => {
   const orderMutation = useMutation({
     mutationFn: async ({ productId, quantity }) => {
       if (!token) throw new Error("Please login to place an order");
-      if (!currentAddress?._id) throw new Error("Address is required");
+      if (!currentAddress?._id) throw new Error("please enter Address");
 
       const res = await axios.post(
         `${VITE_BACKEND_URL}api/orders/single`,

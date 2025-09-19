@@ -67,7 +67,7 @@ const Home = () => {
       toast.success("Added to favorites ❤️");
     },
     onError: (err) => {
-      toast.error("Failed to add favorite");
+      toast.error("please login");
     },
   });
 

@@ -6,7 +6,8 @@ import { Clock, Package, Truck, CheckCircle, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "../Footer/Footer";
 
-const VITE_BACKEND_URL = "http://localhost:5000/";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/";
 const token = localStorage.getItem("token");
 
 const statusSteps = ["pending", "confirmed", "shipped", "delivered"];
