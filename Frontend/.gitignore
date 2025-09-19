@@ -1,33 +1,24 @@
-# Node modules
-node_modules/
-frontend/node_modules/
-
-# Build output
-dist/
-frontend/dist/
-
-# Cache files
-.cache/
-frontend/node_modules/.cache/
-
 # Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# OS files
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# VSCode settings
-.vscode/
-
-# gh-pages cache (if using GitHub Pages)
-frontend/node_modules/.cache/gh-pages/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
